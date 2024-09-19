@@ -17,15 +17,16 @@ app.post('/register',async(req,res)=>{
         res.status(400).send('Already exist')
     }
     else{
-        const newuser=new db({
-            username:username,
-            password:password,
-            createdtime:new Date().toUTCString()
-        });
-        await newuser.save()
-        .then(()=>res.status(200).send('user created'))
-        .catch(e=>console.log(e))
-
+        bcrypt.hash(password, 10, async function(err, hash) {
+            const newuser=new db({
+                username:username,
+                password:hash,
+                createdtime:new Date().toUTCString()
+            });
+            await newuser.save()
+            .then(()=>res.status(200).send('user created'))
+            .catch(e=>console.log(e))
+        });  
     }
 })
 app.listen(process.env.port,()=>{

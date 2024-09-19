@@ -1,10 +1,12 @@
 require('dotenv').config();
-const db=require('./db/userdb')
+const db=require('./db/userdb');
+const tododb=require('./db/todo')
 const app=require('express')();
 const cors=require('cors');
 const bdy=require('body-parser');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
+const verify=require('./middleware/verify')
 app.use(cors());
 app.use(bdy.json());
 app.use(bdy.urlencoded({extended:true}));
@@ -30,10 +32,6 @@ app.post('/register',async(req,res)=>{
         });  
     }
 })
-app.listen(process.env.port,()=>{
-    console.log('listening')
-})
-
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const user = await db.findOne({
@@ -55,5 +53,35 @@ app.post('/login', async (req, res) => {
         });
     } else {
         res.status(404).send('No User Found');
+    }
+});
+app.get('/greet',verify,(req,res)=>{
+    res.status(200)
+    .json({
+        username:req.username,
+        id:req.id
+    })
+})
+app.listen(process.env.port,()=>{
+    console.log('listening')
+})
+
+
+app.post('/create_todo',verify,async(req,res)=>{
+    const newtask=new tododb({
+        task:req.body.task,
+        user:req.username,
+        created:new Date().toUTCString()
+    })
+    await newtask.save()
+    .then(()=>res.status(200).send('Task Added Successfully'))
+    .catch(e=>console.log(e)) 
+})
+app.get('/read_todo',verify,async(req,res)=>{
+    try {
+        const datas = await tododb.find({ user: req.username });
+        res.json(datas);
+    } catch (err) {
+        res.status(404).send('Not Found');
     }
 });

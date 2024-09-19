@@ -1,0 +1,31 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "app.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/register",
+            "dest": "/script.js"
+        },
+        {
+            "src": "/login",
+            "dest": "/script.js"
+        },
+        {
+            "src": "/create_todo",
+            "dest": "/script.js"
+        },
+        {
+            "src": "/read_todo",
+            "dest": "/script.js"
+        },
+        {
+            "src": "/delete_todo/:idx",
+            "dest": "/script.js"
+        }
+    ]
+}

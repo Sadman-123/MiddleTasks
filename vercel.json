@@ -9,23 +9,23 @@
     "routes": [
         {
             "src": "/register",
-            "dest": "/script.js"
+            "dest": "/app.js"
         },
         {
             "src": "/login",
-            "dest": "/script.js"
+            "dest": "/app.js"
         },
         {
             "src": "/create_todo",
-            "dest": "/script.js"
+            "dest": "/app.js"
         },
         {
             "src": "/read_todo",
-            "dest": "/script.js"
+            "dest": "/app.js"
         },
         {
             "src": "/delete_todo/:idx",
-            "dest": "/script.js"
+            "dest": "/app.js"
         }
     ]
 }

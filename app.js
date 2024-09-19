@@ -32,3 +32,23 @@ app.post('/register',async(req,res)=>{
 app.listen(process.env.port,()=>{
     console.log('listening')
 })
+
+app.post('/login',async (req,res)=>{
+    const {username,password}=req.body;
+    const user= await db.findOne({
+        username:username
+    });
+    if(user)
+    {
+        bcrypt.compare(password, user.password, function(err, result) {
+            if(result){
+                res.status(200).send('Login Successful')
+            }
+            res.status(404).send('Password not matched')
+        });
+    }
+    else{
+        res.status(404).send('No User Found')
+    }
+    
+})

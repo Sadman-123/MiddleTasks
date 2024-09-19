@@ -7,7 +7,8 @@ app.use(bdy.json());
 app.use(bdy.urlencoded({extended:true}));
 app.use(cors());
 const bcrypt=require('bcrypt');
-const userdb=require('./db/userdb')
+const userdb=require('./db/userdb');
+const middleman=require('./middleware/auth')
 app.post('/registration',async (req,res)=>{
     const uname=req.body.username;
     const pass=req.body.password;
@@ -39,14 +40,8 @@ app.post('/registration',async (req,res)=>{
    catch(e)
    {
     console.log(e)
-   }
-
-    
+   }   
 })
-app.listen(process.env.port,()=>{
-    console.log('listening')
-})
-
 app.post('/login',async(req,res)=>{
     const uname=req.body.username;
     const pass=req.body.password;
@@ -72,3 +67,11 @@ app.post('/login',async(req,res)=>{
     }
 
 })
+app.get('/userdata',middleman,(req,res)=>{
+    res.send("Hello "+req.username)
+
+})
+app.listen(process.env.port,()=>{
+    console.log('listening')
+})
+

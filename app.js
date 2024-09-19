@@ -62,11 +62,6 @@ app.get('/greet',verify,(req,res)=>{
         id:req.id
     })
 })
-app.listen(process.env.port,()=>{
-    console.log('listening')
-})
-
-
 app.post('/create_todo',verify,async(req,res)=>{
     const newtask=new tododb({
         task:req.body.task,
@@ -85,3 +80,18 @@ app.get('/read_todo',verify,async(req,res)=>{
         res.status(404).send('Not Found');
     }
 });
+app.delete('/delete_todo/:idx', verify, async (req, res) => {
+    try {
+        const result = await tododb.findByIdAndDelete(req.params.idx);
+        if (result) {
+            res.status(200).send('Todo deleted successfully');
+        } else {
+            res.status(404).send('Todo not found');
+        }
+    } catch (err) {
+        res.status(500).send('Error while deleting todo');
+    }
+});
+app.listen(process.env.port,()=>{
+    console.log('listening')
+})

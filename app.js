@@ -49,7 +49,7 @@ app.post('/login', async (req, res) => {
                     token: token,
                 });
             }
-            return res.status(403).send('Password not matched');
+            return res.status(404).send('Password not matched');
         });
     } else {
         res.status(404).send('No User Found');
@@ -80,6 +80,28 @@ app.get('/read_todo',verify,async(req,res)=>{
         res.status(404).send('Not Found');
     }
 });
+app.put('/update_todo/:idx', verify, async (req, res) => {
+    try {
+        const updatedTask = await tododb.findByIdAndUpdate(
+            req.params.idx,
+            {
+                task: req.body.task,
+                user: req.username,
+                created: new Date().toUTCString()
+            },
+            { new: true }
+        );
+        if (updatedTask) {
+            res.status(200).send('Task Updated Successfully');
+        } else {
+            res.status(404).send('Task not found');
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send('Error while updating task');
+    }
+});
+
 app.delete('/delete_todo/:idx', verify, async (req, res) => {
     try {
         const result = await tododb.findByIdAndDelete(req.params.idx);

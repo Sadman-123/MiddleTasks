@@ -49,7 +49,7 @@ app.post('/login', async (req, res) => {
                     token: token,
                 });
             }
-            return res.status(404).send('Password not matched');
+            return res.status(403).send('Password not matched');
         });
     } else {
         res.status(404).send('No User Found');

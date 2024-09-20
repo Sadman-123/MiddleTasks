@@ -24,6 +24,10 @@
             "dest": "/app.js"
         },
         {
+           "src": "/update_todo/(?<idx>[^/]+)",
+            "dest": "/app.js"
+        },
+        {
            "src": "/delete_todo/(?<idx>[^/]+)",
             "dest": "/app.js"
         }

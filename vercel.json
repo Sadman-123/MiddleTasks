@@ -24,7 +24,7 @@
             "dest": "/app.js"
         },
         {
-            "src": "/delete_todo/:idx",
+           "src": "/delete_todo/(?<idx>[^/]+)",
             "dest": "/app.js"
         }
     ]
